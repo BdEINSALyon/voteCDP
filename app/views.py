@@ -40,8 +40,3 @@ def post_vote(request):
 
     return render(request, 'confirm.html')
 
-
-class Results(ListView):
-    model = Liste
-    def get_queryset(self):
-        return Liste.objects.all()
