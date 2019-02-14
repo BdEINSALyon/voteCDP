@@ -1,0 +1,17 @@
+    body{font-family: Roboto}
+
+    .dragArea{
+        min-height: 100px;
+    }
+    .number{
+        background-color: white;
+        border-radius: 100px;
+        padding-left: 8px;
+        padding-right: 8px;
+        margin-right: 20px;
+        color: black;
+    }
+    .validbutton{
+        font-family: Roboto;
+        font-size: 30px;
+    }

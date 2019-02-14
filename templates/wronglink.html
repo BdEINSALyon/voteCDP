@@ -1,0 +1,18 @@
+{% extends 'index.html' %}
+{% block content %}
+
+{% load static %}
+<div id="app">
+    <v-card>
+        <v-card-title>
+            <h1>Bienvenue!</h1>
+        </v-card-title>
+        <v-card-text>
+            <p>Erreur : lien invalide</p>
+        </v-card-text>
+</v-card>
+
+
+<link href="{% static 'css/main.css' %}" rel="stylesheet">
+
+{% endblock %}
