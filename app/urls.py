@@ -15,9 +15,13 @@ Including another URLconf
 """
 from django.urls import path
 from . import views
-
+from django.views.generic import ListView
+from django.contrib.auth.decorators import login_required
+from .models import Liste
 
 urlpatterns = [
     path('', views.index, name='index'),
     path('post_vote/', views.post_vote, name='post_vote'),
+    path('results/', login_required(ListView.as_view(model=Liste,)), name='results'),
+
 ]
