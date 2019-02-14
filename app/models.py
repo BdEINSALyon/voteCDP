@@ -14,7 +14,7 @@ class Votant(models.Model):
 class Liste(models.Model):
     nom = models.CharField(max_length=100)
     status = models.IntegerField(default='1')
-
+    @property
     def compterPts(self):
         return Vote.objects.filter(liste_1=self).count()*4+Vote.objects.filter(liste_2=self).count()*3+Vote.objects.filter(liste_3=self).count()*2+Vote.objects.filter(liste_4=self).count()
 

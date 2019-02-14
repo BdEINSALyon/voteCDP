@@ -3,6 +3,7 @@ from .forms import ListForm
 from .models import Liste
 from .models import Vote
 from .models import Votant
+from django.views.generic import ListView
 
 # Create your views here.
 
@@ -38,3 +39,9 @@ def post_vote(request):
 
 
     return render(request, 'confirm.html')
+
+
+class Results(ListView):
+    model = Liste
+    def get_queryset(self):
+        return Liste.objects.all()
