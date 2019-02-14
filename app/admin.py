@@ -3,7 +3,14 @@ from .models import *
 
 # Register your models here.
 
-admin.site.register(Liste)
+@admin.register(Liste)
+class ListeAdmin(admin.ModelAdmin):
+  list_display = ('nom', 'compterPts')
+  #ordering = ('compterPts',)
+
+
 admin.site.register(Vote)
-admin.site.register(Votant)
+@admin.register(Votant)
+class VotantAdmin(admin.ModelAdmin):
+  list_display = ('token', 'nom', 'prenom', 'vote_ok', 'email_sent')
 
