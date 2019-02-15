@@ -8,7 +8,7 @@ RUN pip3 install -r requirements.txt
 COPY . /app
 ENV DATABASE_URL postgres://cdp@db/cdp
 ENV SECRET_KEY ''
-ENV DJANGO_ENV ''
+ENV DJANGO_ENV 'prod'
 ENV MAILGUN_URL ''
 ENV MAILGUN_KEY ''
 ENV FROM_EMAIL ''
