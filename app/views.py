@@ -14,11 +14,11 @@ import csv
 
 def index(request):
     token = request.GET.get('uuid', None)
-    user = Votant.objects.get(token=token)
+    user = Votant.objects.filter(token=token)
     if not user:
         return render(request, 'wronglink.html')
 
-    elif user.vote_ok == True:
+    elif user[0].vote_ok == True:
         return render(request, 'votedone.html')
 
     present=datetime.now()
@@ -38,7 +38,7 @@ def index(request):
             'name': l.get('nom')
         })
 
-    return render(request, 'welcome.html', {'form': form, 'listes': listes, 'prenom':user.prenom})
+    return render(request, 'welcome.html', {'form': form, 'listes': listes, 'prenom':user[0].prenom})
 
 def send_link(request):
     if(settings.SEND_EMAIL=="1"):
