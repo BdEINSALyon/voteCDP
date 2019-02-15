@@ -20,7 +20,7 @@
                           <draggable v-model="candidats" class="dragArea" :options="{group: 'listeCdP'}">
                                    <div v-for="element in candidats" :key="element.id">
                                        <v-layout row-wrap>
-                                           <v-flex xs8s>
+                                           <v-flex xs10>
                                          <v-card color="blue-grey darken-2" class="white--text">
                                               <v-card-title>
                                                   <div class="headline"><span class="number">[[candidats.indexOf(element)+1]]</span>[[element.name]]</div>
