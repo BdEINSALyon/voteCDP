@@ -61,14 +61,13 @@ def send_email(prenom, nom, email, token):
               "html": get_template("send_email.html").render({"prenom": prenom, "nom": nom, "url": url})})
 
 def post_vote(request):
-
     form = ListForm(request.POST or None)
-
     if form.is_valid():
-        form.save()
-
-
-    return render(request, 'confirm.html')
+        if(Votant.objects.get(token=form.cleaned_data['user_uuid']).vote_ok==False):
+            form.save()
+            return render(request, 'confirm.html')
+        else:
+            return render(request, 'votedone.html')
 
 def upload_file(request):
     if request.method == 'POST':
