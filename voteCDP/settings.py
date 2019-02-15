@@ -23,9 +23,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.getenv('SECRET_KEY', '3zk(m3#^rblv9zwks956$%4ng(6!cc5x(n#fap7i5)f27&#oay')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DJANGO_ENV', 'prod') == 'dev'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['cdp.app.bde-insa-lyon.fr']
+
+if DEBUG:
+    ALLOWED_HOSTS.extend(['localhost'])
 
 
 # Application definition

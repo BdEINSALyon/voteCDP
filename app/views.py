@@ -4,7 +4,6 @@ from .models import Liste
 from .models import Votant
 from voteCDP import settings
 import requests
-from django.template import Context
 from django.template.loader import get_template
 # Create your views here.
 
