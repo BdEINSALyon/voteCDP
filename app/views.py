@@ -38,7 +38,7 @@ def index(request):
             'name': l.get('nom')
         })
 
-    return render(request, 'welcome.html', {'form': form, 'listes': listes})
+    return render(request, 'welcome.html', {'form': form, 'listes': listes, 'prenom':user.prenom})
 
 def send_link(request):
     if(settings.SEND_EMAIL=="1"):
