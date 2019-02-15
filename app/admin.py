@@ -23,6 +23,7 @@ class VotantRessource(ModelResource):
 @admin.register(Votant)
 class VotantAdmin(ImportExportModelAdmin):
   resource_class = VotantRessource
+  list_display = ('token', 'nom', 'prenom', 'vote_ok', 'email_sent')
   list_filter = ('vote_ok', 'email_sent')
   search_fields = ('nom', 'prenom')
   actions = ('envoyer_les_mails',)
