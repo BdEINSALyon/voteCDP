@@ -3,8 +3,9 @@ var app = new Vue({
   el: '#app',
   data: {
     candidats: listes,
+      dialog: true,
   },
-  methods: {
+    methods: {
     handleChange() {
       console.log('changed');
     },

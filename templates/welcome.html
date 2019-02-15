@@ -3,68 +3,85 @@
 
 {% load static %}
 <div id="app">
-    <v-card>
-        <v-card-title>
-            <h1>Bienvenue!</h1>
-        </v-card-title>
-        <v-card-text>
+    <v-app>
+        <v-card flat>
+            <v-card-title>
+                <h1>Bienvenue!</h1>
+            </v-card-title>
+            <v-card-text>
+                <p>Classe les listes candidates par ordre de préférence</p>
+                <p>Attention, le vote est définitif et ne pourra plus être modifier une fois enregistré.
+                    Les votes sont ouverts du 15/02 14h00 au 19/02 20h00.</p>
+            </v-card-text>
 
-        <p>Classe les listes candidates par ordre de préférence</p>
-        <p>Attention, le vote est définitif et ne pourra plus être modifier une fois enregistré.
-            Les votes sont ouverts du 15/02 14h00 au 19/02 20h00.</p>
-    </v-card-text>
+            <v-container fluid grid-list-lg>
+                <v-layout row wrap>
+                    <v-flex xs12>
+                          <draggable v-model="candidats" class="dragArea" :options="{group: 'listeCdP'}">
+                                   <div v-for="element in candidats" :key="element.id">
+                                       <v-layout row-wrap>
+                                           <v-flex xs10>
+                                         <v-card color="blue-grey darken-2" class="white--text">
+                                              <v-card-title>
+                                                  <div class="headline"><span class="number">[[candidats.indexOf(element)+1]]</span>[[element.name]]</div>
+                                              </v-card-title>
+                                         </v-card>
+                                           </v-flex>
+                                           <v-flex xs2>
+                                           <v-card color="#F5F5F5" style="color:black">
+                                               <v-card-title>
+                                                   <div class="headline" v-if="candidats.indexOf(element)<4"> + [[4-candidats.indexOf(element)]] pts </div>
+                                                   <div class="headline" v-else> + 0 pts </div>
+                                               </v-card-title>
+                                           </v-card>
+                                           </v-flex>
+                                       </v-layout>
+                                 </div>
+                          </draggable>
+                    </v-flex>
 
-<v-container fluid grid-list-lg>
-    <v-layout row wrap>
-              <v-flex xs12>
-                      <draggable v-model="candidats" class="dragArea" :options="{group: 'listeCdP'}">
-                               <div v-for="element in candidats" :key="element.id">
-                                   <v-layout row-wrap>
-                                       <v-flex xs10>
-                                     <v-card color="blue-grey darken-2" class="white--text">
-                                          <v-card-title>
-                                              <div class="headline"><span class="number">[[candidats.indexOf(element)+1]]</span>[[element.name]]</div>
-                                          </v-card-title>
-                                     </v-card>
-                                       </v-flex>
-                                       <v-flex xs2>
-                                       <v-card color="#F5F5F5" style="color:black">
-                                           <v-card-title>
-                                               <div class="headline" v-if="candidats.indexOf(element)<4"> + [[4-candidats.indexOf(element)]] pts </div>
-                                               <div class="headline" v-else> + 0 pts </div>
-                                           </v-card-title>
-                                       </v-card>
-                                       </v-flex>
-                                   </v-layout>
-                             </div>
-                      </draggable>
-              </v-flex>
+                </v-layout>
 
-    </v-layout>
-</v-container>
-<v-flex xs2 offset-xs10>
-            <v-btn large color="green" class="validbutton" onclick="performVote()">VOTER</v-btn>
 
-      </v-flex>
+            </v-container>
+        </v-card>
+        <v-layout column align center>
+            <v-flex xs2 offset-xs5>
+                <v-dialog model="dialog" width="500">
+                    <v-btn large color="green" class="validbutton" slot="activator">VOTER</v-btn>
+                    <v-card>
+                        <v-card-title class="headline">Confirmation</v-card-title>
+                        <v-card-text>Vous allez voter pour les listes suivantes, dans l'ordre suivant :
+                            <br/>
+                            <ol>
+                                <div v-for="element in candidats" :key="element.id"><li>[[element.name]]</li></div>
+                            </ol>
+                        </v-card-text>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="green" onclick="performVote()">Confirmer</v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
+                </v-flex>
+        </v-layout>
+    </v-app>
+    <div>
+    {% if envoi %}Votre message a bien été envoyé !{% endif %}
+        <div v-for="element in candidats" :key="element.id" hidden>
+            <span class="list_picked">[[element.id]]</span>
+        </div>
 
-</v-card>
-<div>
-{% if envoi %}Votre message a bien été envoyé !{% endif %}
-<div v-for="element in candidats" :key="element.id" hidden>
-    <span class="list_picked">[[element.id]]</span>
+        <form action="{% url "post_vote" %}" method="post" id="vote_form" hidden>
+            {% csrf_token %}
+            {{ form.as_p }}
+        </form>
+
+    </div>
 </div>
 
-<form action="{% url "post_vote" %}" method="post" id="vote_form" hidden>
-
-    {% csrf_token %}
-    {{ form.as_p }}
-
-</form>
-</div>
-</div>
-<script>var listes = {{ listes|safe }}</script>
+<script>var listes ={{ listes|safe }}</script>
 <script src="{% static 'js/voteapp.js' %}"></script>
-
 <link href="{% static 'css/main.css' %}" rel="stylesheet">
 
 {% endblock %}
