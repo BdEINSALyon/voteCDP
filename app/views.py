@@ -19,7 +19,7 @@ def index(request):
 
 
     form = ListForm(request.POST or None)
-    listesSet = Liste.objects.values()
+    listesSet = Liste.objects.order_by("nom").values()
     listes = []
     for l in listesSet:
         listes.append({
