@@ -23,11 +23,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.getenv('SECRET_KEY', '3zk(m3#^rblv9zwks956$%4ng(6!cc5x(n#fap7i5)f27&#oay')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DJANGO_ENV', 'prod') == 'dev'
+DEBUG = os.getenv('DJANGO_ENV', 'dev') == 'dev'
 
 ALLOWED_HOSTS = ['cdp.app.bde-insa-lyon.fr']
-
 if DEBUG:
+    ALLOWED_HOSTS.extend(['127.0.0.1'])
     ALLOWED_HOSTS.extend(['localhost'])
 
 
@@ -130,3 +130,5 @@ MAILGUN_URL = os.getenv('MAILGUN_URL', 'https://api.mailgun.net/v3/mg.bde-insa-l
 MAILGUN_KEY = os.getenv('MAILGUN_KEY')
 FROM_EMAIL = os.getenv('FROM_EMAIL', 'cdp@mg.bde-insa-lyon.fr')
 RETURN_LINK = os.getenv('RETURN_LINK', 'http://127.0.0.1:8000/')
+OPENING = os.getenv('OPENING')
+CLOSING = os.getenv('CLOSING')
