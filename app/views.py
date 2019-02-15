@@ -19,8 +19,8 @@ def index(request):
         return render(request, 'votedone.html')
 
     present=datetime.now()
-    max=datetime.strptime(settings.CLOSING, "%b %m %d %H:%M:%S %Z %Y")#Tue May 29 00:01:00 GMT+2 2018"
-    min=datetime.strptime(settings.OPENING, "%b %m %d %H:%M:%S %Z %Y")
+    max=datetime.strptime(settings.CLOSING, "%m %d %H:%M:%S %Y")#Tue May 29 00:01:00 GMT+2 2018"
+    min=datetime.strptime(settings.OPENING, "%m %d %H:%M:%S %Y")
     if max<present:
         return render(request,'toolate.html')
     if min>present:
