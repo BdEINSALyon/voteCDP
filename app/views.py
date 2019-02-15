@@ -46,8 +46,8 @@ def send_link(request):
             send_email(votant.prenom, votant.nom, votant.email, votant.token)
             votant.email_sent=True
             votant.save()
-        user_total = Votant.objects.all().count()
-        user_send = Votant.objects.filter(email_sent=True).count()
+    user_total = Votant.objects.all().count()
+    user_send = Votant.objects.filter(email_sent=True).count()
     return render(request, 'email_admin.html',{"user_total": user_total, "user_send": user_send})
 
 def send_email(prenom, nom, email, token):
