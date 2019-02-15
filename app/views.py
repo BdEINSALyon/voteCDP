@@ -3,6 +3,7 @@ from .forms import ListForm
 from .models import Liste
 from .models import Votant
 from voteCDP import settings
+from datetime import datetime
 import requests
 from django.template.loader import get_template
 # Create your views here.
@@ -17,7 +18,9 @@ def index(request):
     elif user[0].vote_ok == True:
         return render(request, 'votedone.html')
 
-
+    present=datetime.now()
+    max=datetime.strptime(settings.CLOSING, "%b %m %d %H:%M:%S %Z %Y")#Tue May 29 00:01:00 GMT+2 2018"
+    min=datetime.strptime(settings.OPENING, "%b %m %d %H:%M:%S %Z %Y")
     form = ListForm(request.POST or None)
     listesSet = Liste.objects.order_by("nom").values()
     listes = []

@@ -16,7 +16,7 @@
 
             <v-container fluid grid-list-lg>
                 <v-layout row wrap>
-                    <v-flex xs12>
+                    <v-flex xs10>
                           <draggable v-model="candidats" class="dragArea" :options="{group: 'listeCdP'}">
                                    <div v-for="element in candidats" :key="element.id">
                                        <v-layout row-wrap>
@@ -38,6 +38,9 @@
                                        </v-layout>
                                  </div>
                           </draggable>
+                    </v-flex>
+                    <v-flex xs2>
+
                     </v-flex>
 
                 </v-layout>
