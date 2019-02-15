@@ -2,9 +2,8 @@ from .models import Votant
 import csv
 
 def load_csv(file):
-
     with open(file) as csvfile:
-        spamreader = csv.DictReader(csvfile)
+        spamreader = csv.DictReader(csvfile.read())
         for row in spamreader:
             user = Votant()
             user.prenom = row['prenom']

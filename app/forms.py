@@ -5,6 +5,8 @@ from .models import Liste
 import logging
 
 logger = logging.getLogger(__name__)
+class UploadFileForm(forms.Form):
+    file = forms.FileField()
 
 class ListForm(forms.ModelForm):
 
@@ -32,7 +34,6 @@ class ListForm(forms.ModelForm):
         liste_2 = cleaned_data.get('liste_2')
         liste_3 = cleaned_data.get('liste_3')
         liste_4 = cleaned_data.get('liste_4')
-
         vote = [liste_1, liste_2, liste_3, liste_4]
         if len(vote) != len(set(vote)):# si oui -> doublons
             raise forms.ValidationError("listes identiques")
@@ -46,5 +47,3 @@ class ListForm(forms.ModelForm):
             raise forms.ValidationError("liste(s) inexistantes")
 
         return cleaned_data  # N'oublions pas de renvoyer les données si tout est OK
-
-
