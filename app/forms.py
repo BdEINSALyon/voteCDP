@@ -5,6 +5,8 @@ from .models import Liste
 import logging
 
 logger = logging.getLogger(__name__)
+class UploadFileForm(forms.Form):
+    file = forms.FileField()
 
 class ListForm(forms.ModelForm):
 
@@ -46,5 +48,3 @@ class ListForm(forms.ModelForm):
             raise forms.ValidationError("liste(s) inexistantes")
 
         return cleaned_data  # N'oublions pas de renvoyer les données si tout est OK
-
-

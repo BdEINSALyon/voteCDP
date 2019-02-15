@@ -21,5 +21,6 @@ from django.contrib.auth.decorators import login_required
 urlpatterns = [
     path('', views.index, name='index'),
     path('post_vote/', views.post_vote, name='post_vote'),
-    path('send_email/', views.send_link, name='send_email'),
+    path('send_email/', login_required(views.send_link), name='send_email'),
+    path('import_list/', login_required(views.upload_file), name='upload_file'),
 ]

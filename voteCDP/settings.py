@@ -130,5 +130,6 @@ MAILGUN_URL = os.getenv('MAILGUN_URL', 'https://api.mailgun.net/v3/mg.bde-insa-l
 MAILGUN_KEY = os.getenv('MAILGUN_KEY')
 FROM_EMAIL = os.getenv('FROM_EMAIL', 'cdp@mg.bde-insa-lyon.fr')
 RETURN_LINK = os.getenv('RETURN_LINK', 'http://127.0.0.1:8000/')
+SEND_EMAIL = os.getenv('SEND_EMAIL', 0)
 OPENING = os.getenv('OPENING')
 CLOSING = os.getenv('CLOSING')

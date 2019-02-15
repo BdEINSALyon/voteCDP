@@ -1,10 +1,12 @@
 from django.shortcuts import render
-from .forms import ListForm
+from .forms import ListForm, UploadFileForm
 from .models import Liste
 from .models import Votant
 from voteCDP import settings
 import requests
 from django.template.loader import get_template
+import csv
+
 # Create your views here.
 
 
@@ -30,13 +32,14 @@ def index(request):
     return render(request, 'welcome.html', {'form': form, 'listes': listes})
 
 def send_link(request):
-    user_list = Votant.objects.filter(email_sent=False)[:10]
-    for votant in user_list:
-        send_email(votant.prenom, votant.nom, votant.email, votant.token)
-        votant.email_sent=True
-        votant.save()
-    user_total = Votant.objects.all().count()
-    user_send = Votant.objects.filter(email_sent=True).count()
+    if(settings.SEND_EMAIL):
+        user_list = Votant.objects.filter(email_sent=False)[:10]
+        for votant in user_list:
+            send_email(votant.prenom, votant.nom, votant.email, votant.token)
+            votant.email_sent=True
+            votant.save()
+        user_total = Votant.objects.all().count()
+        user_send = Votant.objects.filter(email_sent=True).count()
     return render(request, 'email_admin.html',{"user_total": user_total, "user_send": user_send})
 
 def send_email(prenom, nom, email, token):
@@ -59,3 +62,17 @@ def post_vote(request):
 
     return render(request, 'confirm.html')
 
+def upload_file(request):
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            spamreader = csv.DictReader(request.FILES['file'].read())
+            for row in spamreader:
+                user = Votant()
+                user.prenom = row['prenom']
+                user.nom = row['nom']
+                user.email = row['email']
+                user.save()
+    else:
+        form = UploadFileForm()
+    return render(request, 'upload.html', {'form': form})

@@ -6,7 +6,7 @@ import uuid
 class Votant(models.Model):
     nom = models.CharField(max_length=50)
     prenom = models.CharField(max_length=50)
-    email = models.EmailField(null=False)
+    email = models.EmailField(null=False, unique=True)
     email_sent = models.BooleanField(default=False)
     vote_ok = models.BooleanField(default=False)
     token = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
