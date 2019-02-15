@@ -21,6 +21,11 @@ def index(request):
     present=datetime.now()
     max=datetime.strptime(settings.CLOSING, "%b %m %d %H:%M:%S %Z %Y")#Tue May 29 00:01:00 GMT+2 2018"
     min=datetime.strptime(settings.OPENING, "%b %m %d %H:%M:%S %Z %Y")
+    if max<present:
+        return render(request,'toolate.html')
+    if min>present:
+        return render(request, 'tooearly.html')
+
     form = ListForm(request.POST or None)
     listesSet = Liste.objects.order_by("nom").values()
     listes = []
