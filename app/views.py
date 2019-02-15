@@ -73,12 +73,15 @@ def upload_file(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
-            spamreader = csv.DictReader(request.FILES['file'])
-            for row in spamreader:
+            strfile=str(request.FILES['file'].read())
+            strfile=strfile[2:-1]
+            liste=strfile.split(';')
+            for perso in liste:
+                info = perso.split(',')
                 user = Votant()
-                user.prenom = row['prenom']
-                user.nom = row['nom']
-                user.email = row['email']
+                user.prenom = info[0]
+                user.nom = info[1]
+                user.email=info[2]
                 user.save()
 
     else:
