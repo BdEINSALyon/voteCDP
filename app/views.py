@@ -14,11 +14,11 @@ import csv
 
 def index(request):
     token = request.GET.get('uuid', None)
-    user = Votant.objects.filter(token=token)
+    user = Votant.objects.get(token=token)
     if not user:
         return render(request, 'wronglink.html')
 
-    elif user[0].vote_ok == True:
+    elif user.vote_ok == True:
         return render(request, 'votedone.html')
 
     present=datetime.now()
