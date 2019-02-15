@@ -73,13 +73,14 @@ def upload_file(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
-            spamreader = csv.DictReader(request.FILES['file'].read())
+            spamreader = csv.DictReader(request.FILES['file'])
             for row in spamreader:
                 user = Votant()
                 user.prenom = row['prenom']
                 user.nom = row['nom']
                 user.email = row['email']
                 user.save()
+
     else:
         form = UploadFileForm()
     return render(request, 'upload.html', {'form': form})
