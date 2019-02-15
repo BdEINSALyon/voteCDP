@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .forms import ListForm, UploadFileForm
 from .models import Liste
 from .models import Votant
+from .models import Vote
 from voteCDP import settings
 from datetime import datetime
 import requests
@@ -48,7 +49,9 @@ def send_link(request):
             votant.save()
     user_total = Votant.objects.all().count()
     user_send = Votant.objects.filter(email_sent=True).count()
-    return render(request, 'email_admin.html',{"user_total": user_total, "user_send": user_send})
+    nb_vote = Vote.objects.count()
+    nb_votant = Votant.objects.filter(vote_ok=True).count()
+    return render(request, 'email_admin.html',{"user_total": user_total, "user_send": user_send, "nb_vote":nb_vote, "nb_votant":nb_votant})
 
 def send_email(prenom, nom, email, token):
     url = settings.RETURN_LINK + "?uuid=" + str(token)
