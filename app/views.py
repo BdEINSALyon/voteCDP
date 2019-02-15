@@ -4,7 +4,6 @@ from .models import Liste
 from .models import Votant
 from voteCDP import settings
 import requests
-from django.template import Context
 from django.template.loader import get_template
 # Create your views here.
 
@@ -20,7 +19,7 @@ def index(request):
 
 
     form = ListForm(request.POST or None)
-    listesSet = Liste.objects.values()
+    listesSet = Liste.objects.order_by("nom").values()
     listes = []
     for l in listesSet:
         listes.append({
@@ -31,14 +30,14 @@ def index(request):
     return render(request, 'welcome.html', {'form': form, 'listes': listes})
 
 def send_link(request):
-    user_list = Votant.objects.filter(email_sent=False)
+    user_list = Votant.objects.filter(email_sent=False)[:10]
     for votant in user_list:
         send_email(votant.prenom, votant.nom, votant.email, votant.token)
         votant.email_sent=True
         votant.save()
     user_total = Votant.objects.all().count()
     user_send = Votant.objects.filter(email_sent=True).count()
-    return render(request, 'email.html',{"user_total": user_total, "user_send": user_send})
+    return render(request, 'email_admin.html',{"user_total": user_total, "user_send": user_send})
 
 def send_email(prenom, nom, email, token):
     url = settings.RETURN_LINK + "?uuid=" + str(token)

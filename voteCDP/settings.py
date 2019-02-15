@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -22,9 +23,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.getenv('SECRET_KEY', '3zk(m3#^rblv9zwks956$%4ng(6!cc5x(n#fap7i5)f27&#oay')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DJANGO_ENV', 'prod') == 'dev'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['cdp.app.bde-insa-lyon.fr']
+
+if DEBUG:
+    ALLOWED_HOSTS.extend(['localhost'])
 
 
 # Application definition
@@ -75,10 +79,7 @@ WSGI_APPLICATION = 'voteCDP.wsgi.application'
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    'default': dj_database_url.config(default='sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3'), conn_max_age=600)
 }
 
 
@@ -119,14 +120,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATICFILES_DIRS = (
-
     os.path.join(BASE_DIR, "static"),
-
 )
 
 
 MAILGUN_URL = os.getenv('MAILGUN_URL', 'https://api.mailgun.net/v3/mg.bde-insa-lyon.fr/messages')
-MAILGUN_KEY = os.getenv('MAILGUN_KEY', 'key-e4cdcca040ae1433e6d8f1d78c3d6fad')
+MAILGUN_KEY = os.getenv('MAILGUN_KEY')
 FROM_EMAIL = os.getenv('FROM_EMAIL', 'cdp@mg.bde-insa-lyon.fr')
 RETURN_LINK = os.getenv('RETURN_LINK', 'http://127.0.0.1:8000/')
