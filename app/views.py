@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from .forms import ListForm
 from .models import Liste
-from .models import Vote
 from .models import Votant
-from django.views.generic import ListView
-
+from voteCDP import settings
+import requests
+from django.template import Context
+from django.template.loader import get_template
 # Create your views here.
 
 
@@ -29,6 +30,25 @@ def index(request):
 
     return render(request, 'welcome.html', {'form': form, 'listes': listes})
 
+def send_link(request):
+    user_list = Votant.objects.filter(email_sent=False)
+    for votant in user_list:
+        send_email(votant.prenom, votant.nom, votant.email, votant.token)
+        votant.email_sent=True
+        votant.save()
+    user_total = Votant.objects.all().count()
+    user_send = Votant.objects.filter(email_sent=True).count()
+    return render(request, 'email.html',{"user_total": user_total, "user_send": user_send})
+
+def send_email(prenom, nom, email, token):
+    url = settings.RETURN_LINK + "?uuid=" + str(token)
+    return requests.post(
+        settings.MAILGUN_URL,
+        auth=("api", settings.MAILGUN_KEY),
+        data={"from": settings.FROM_EMAIL,
+              "to": email,
+              "subject": "Vote campagne CDP 2019",
+              "html": get_template("send_email.html").render({"prenom": prenom, "nom": nom, "url": url})})
 
 def post_vote(request):
 

@@ -18,9 +18,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '3zk(m3#^rblv9zwks956$%4ng(6!cc5x(n#fap7i5)f27&#oay'
+SECRET_KEY = os.getenv('SECRET_KEY', '3zk(m3#^rblv9zwks956$%4ng(6!cc5x(n#fap7i5)f27&#oay')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -105,9 +104,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'fr-fr'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Paris'
 
 USE_I18N = True
 
@@ -125,3 +124,9 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 
 )
+
+
+MAILGUN_URL = os.getenv('MAILGUN_URL', 'https://api.mailgun.net/v3/mg.bde-insa-lyon.fr/messages')
+MAILGUN_KEY = os.getenv('MAILGUN_KEY', 'key-e4cdcca040ae1433e6d8f1d78c3d6fad')
+FROM_EMAIL = os.getenv('FROM_EMAIL', 'cdp@mg.bde-insa-lyon.fr')
+RETURN_LINK = os.getenv('RETURN_LINK', 'http://127.0.0.1:8000/')
