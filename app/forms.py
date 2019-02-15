@@ -33,7 +33,7 @@ class ListForm(forms.ModelForm):
         liste_3 = cleaned_data.get('liste_3')
         liste_4 = cleaned_data.get('liste_4')
 
-        vote=[liste_1, liste_2, liste_3, liste_4]
+        vote = [liste_1, liste_2, liste_3, liste_4]
         if len(vote) != len(set(vote)):# si oui -> doublons
             raise forms.ValidationError("listes identiques")
 
