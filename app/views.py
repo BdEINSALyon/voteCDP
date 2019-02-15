@@ -40,7 +40,7 @@ def index(request):
     return render(request, 'welcome.html', {'form': form, 'listes': listes})
 
 def send_link(request):
-    if(settings.SEND_EMAIL):
+    if(settings.SEND_EMAIL=="1"):
         user_list = Votant.objects.filter(email_sent=False)[:10]
         for votant in user_list:
             send_email(votant.prenom, votant.nom, votant.email, votant.token)
