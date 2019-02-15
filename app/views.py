@@ -3,6 +3,7 @@ from .forms import ListForm, UploadFileForm
 from .models import Liste
 from .models import Votant
 from voteCDP import settings
+from datetime import datetime
 import requests
 from django.template.loader import get_template
 import csv
@@ -19,6 +20,13 @@ def index(request):
     elif user[0].vote_ok == True:
         return render(request, 'votedone.html')
 
+    present=datetime.now()
+    max=datetime.strptime(settings.CLOSING, "%m %d %H:%M:%S %Y")#Tue May 29 00:01:00 GMT+2 2018"
+    min=datetime.strptime(settings.OPENING, "%m %d %H:%M:%S %Y")
+    if max<present:
+        return render(request,'toolate.html')
+    if min>present:
+        return render(request, 'tooearly.html')
 
     form = ListForm(request.POST or None)
     listesSet = Liste.objects.order_by("nom").values()
