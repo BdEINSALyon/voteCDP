@@ -44,7 +44,7 @@ def send_link(request):
     if(settings.SEND_EMAIL=="1"):
         user_list = Votant.objects.filter(email_sent=False)[:10]
         for votant in user_list:
-            send_email(votant.prenom, votant.nom, votant.email, votant.token)
+            send_email_first(votant.prenom, votant.nom, votant.email, votant.token)
             votant.email_sent=True
             votant.save()
     user_total = Votant.objects.all().count()
@@ -53,7 +53,7 @@ def send_link(request):
     nb_votant = Votant.objects.filter(vote_ok=True).count()
     return render(request, 'email_admin.html',{"user_total": user_total, "user_send": user_send, "nb_vote":nb_vote, "nb_votant":nb_votant})
 
-def send_email(prenom, nom, email, token):
+def send_email_first(prenom, nom, email, token):
     url = settings.RETURN_LINK + "?uuid=" + str(token)
     return requests.post(
         settings.MAILGUN_URL,

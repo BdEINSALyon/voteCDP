@@ -8,6 +8,7 @@ class Votant(models.Model):
     prenom = models.CharField(max_length=50)
     email = models.EmailField(null=False, unique=True)
     email_sent = models.BooleanField(default=False)
+    email_reminder_sent = models.BooleanField(default=False)
     vote_ok = models.BooleanField(default=False)
     token = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
@@ -15,9 +16,20 @@ class Liste(models.Model):
     nom = models.CharField(max_length=100)
     status = models.IntegerField(default='1')
     @property
+    def nb_vote1(self):
+        return Vote.objects.filter(liste_1=self).count()
+    @property
+    def nb_vote2(self):
+        return Vote.objects.filter(liste_2=self).count()
+    @property
+    def nb_vote3(self):
+        return Vote.objects.filter(liste_3=self).count()
+    @property
+    def nb_vote4(self):
+        return Vote.objects.filter(liste_4=self).count()
+    @property
     def compterPts(self):
-        return Vote.objects.filter(liste_1=self).count()*4+Vote.objects.filter(liste_2=self).count()*3+Vote.objects.filter(liste_3=self).count()*2+Vote.objects.filter(liste_4=self).count()
-
+        return self.nb_vote1*4+self.nb_vote2*3+self.nb_vote3*2+self.nb_vote4
     def __str__(self):
         return self.nom
 
