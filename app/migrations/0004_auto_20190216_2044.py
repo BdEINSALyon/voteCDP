@@ -14,10 +14,5 @@ class Migration(migrations.Migration):
             model_name='votant',
             name='email_reminder_sent',
             field=models.BooleanField(default=False),
-        ),
-        migrations.AlterField(
-            model_name='votant',
-            name='email',
-            field=models.EmailField(max_length=254, unique=True),
-        ),
+        )
     ]
