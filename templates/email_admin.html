@@ -11,9 +11,20 @@
     <title>Envoyer Email</title>
   </head>
   <body><br><br>
-    <h1>Email envoyés : {{ user_send }} / {{ user_total }}</h1>
-    <h2>{{ nb_vote }} votes enregistrés pour {{ nb_votant }} personnes qui ont voté (doit être égal)</h2>
-    <h2>{{ reminder_send }} mails de rappel envoyés</h2>
+  <div class="alert alert-success" role="alert">
+    <h2>Email envoyés : {{ user_send }} / {{ user_total }}</h2>
+      {{ reminder_send }} mails de rappel envoyés
+  </div>
+  <div class="alert alert-info" role="alert">
+    <h6>VERIFICATION : {{ nb_vote }} votes enregistrés pour {{ nb_votant }} personnes qui ont voté (doit être égal)</h6>
+  </div>
+  <div class="alert alert-danger" role="alert">
+      <h2>Participation</h2>
+      Votant : {{ nb_votant }}<br>
+      Inscrits : {{ user_total }}<br>
+      <b>Participation : {{ participation }} %</b>
+    </div>
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

@@ -60,7 +60,8 @@ def send_link(request, send):
     reminder_send = Votant.objects.filter(email_reminder_sent=True).count()
     nb_vote = Vote.objects.count()
     nb_votant = Votant.objects.filter(vote_ok=True).count()
-    return render(request, 'email_admin.html',{"user_total": user_total, "user_send": user_send, "nb_vote":nb_vote, "nb_votant":nb_votant, "reminder_send": reminder_send})
+    participation = int(nb_votant/user_total * 100)
+    return render(request, 'email_admin.html',{"user_total": user_total, "user_send": user_send, "nb_vote":nb_vote, "nb_votant":nb_votant, "reminder_send": reminder_send, 'participation': participation})
 
 def send_email_first(prenom, nom, email, token):
     url = settings.RETURN_LINK + "?uuid=" + str(token)
