@@ -27,12 +27,9 @@ class VotantAdmin(ImportExportModelAdmin):
   list_filter = ('vote_ok', 'email_sent')
   search_fields = ('nom', 'prenom')
   actions = ('envoyer_les_mails',)
-  def envoyer_les_mails(self, request, queryset):# Union[QuerySet, List[Votant]]):
+  def envoyer_les_mails(self, request, queryset):
     for obj in queryset.filter(email_sent=False):
-      #obj : Votant = i
-      #logger.info("Envoi d'un mail de lien à {}".format(obj.email))
-      r = send_email_first(prenom=obj.prenom, nom=obj.nom, email=obj.email, token=obj.token)
-      #logger.info(r.text)
+      send_email_first(prenom=obj.prenom, nom=obj.nom, email=obj.email, token=obj.token)
       obj.email_sent=True
       obj.save()
       self.message_user(request,"{} mails envoyé(s), vérifiez les logs Mailgun et le ficher {} en cas de problème".format(queryset.count(), __name__))

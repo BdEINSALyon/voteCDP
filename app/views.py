@@ -40,18 +40,27 @@ def index(request):
 
     return render(request, 'welcome.html', {'form': form, 'listes': listes, 'prenom':user[0].prenom})
 
-def send_link(request):
-    if(settings.SEND_EMAIL=="1"):
-        user_list = Votant.objects.filter(email_sent=False)[:10]
-        for votant in user_list:
-            send_email_first(votant.prenom, votant.nom, votant.email, votant.token)
-            votant.email_sent=True
-            votant.save()
+def send_link(request, send):
+    if send == "first":
+        if(settings.SEND_EMAIL=="1"):
+            user_list = Votant.objects.filter(email_sent=False)[:10]
+            for votant in user_list:
+                send_email_first(votant.prenom, votant.nom, votant.email, votant.token)
+                votant.email_sent=True
+                votant.save()
+    elif send == "remind":
+        if (settings.SEND_EMAIL == "1"):
+            user_list = Votant.objects.filter(vote_ok=False).filter(email_reminder_sent=False)[:10]
+            for votant in user_list:
+                send_email_reminder(votant.prenom, votant.nom, votant.email, votant.token)
+                votant.email_reminder_sent=True
+                votant.save()
     user_total = Votant.objects.all().count()
     user_send = Votant.objects.filter(email_sent=True).count()
+    reminder_send = Votant.objects.filter(email_reminder_sent=True).count()
     nb_vote = Vote.objects.count()
     nb_votant = Votant.objects.filter(vote_ok=True).count()
-    return render(request, 'email_admin.html',{"user_total": user_total, "user_send": user_send, "nb_vote":nb_vote, "nb_votant":nb_votant})
+    return render(request, 'email_admin.html',{"user_total": user_total, "user_send": user_send, "nb_vote":nb_vote, "nb_votant":nb_votant, "reminder_send": reminder_send})
 
 def send_email_first(prenom, nom, email, token):
     url = settings.RETURN_LINK + "?uuid=" + str(token)
@@ -61,7 +70,17 @@ def send_email_first(prenom, nom, email, token):
         data={"from": settings.FROM_EMAIL,
               "to": email,
               "subject": "Vote campagne CDP 2019",
-              "html": get_template("send_email.html").render({"prenom": prenom, "nom": nom, "url": url})})
+              "html": get_template("first_email.html").render({"prenom": prenom, "nom": nom, "url": url})})
+
+def send_email_reminder(prenom, nom, email, token):
+    url = settings.RETURN_LINK + "?uuid=" + str(token)
+    return requests.post(
+        settings.MAILGUN_URL,
+        auth=("api", settings.MAILGUN_KEY),
+        data={"from": settings.FROM_EMAIL,
+              "to": email,
+              "subject": "DERNIER RAPPEL : Vote campagne CDP 2019",
+              "html": get_template("reminder_email.html").render({"prenom": prenom, "nom": nom, "url": url})})
 
 def post_vote(request):
     form = ListForm(request.POST or None)
